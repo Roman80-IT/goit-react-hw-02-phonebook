@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
+import { Filter } from './Filter/Filter';
 
 export class ContactList extends Component {
   render() {
@@ -23,6 +24,7 @@ export class ContactList extends Component {
 export class App extends Component {
   state = {
     contacts: [],
+    filter: '',
     name: '',
     number: '',
   };
@@ -35,6 +37,10 @@ export class App extends Component {
     this.setState({ number: event.target.value });
   };
 
+  handleFilterChange = event => {
+    this.setState({ filter: event.target.value });
+  };
+
   handleAddContact = () => {
     const { name, number, contacts } = this.state;
     if (name.trim() === '' || number.trim() === '') {
@@ -44,7 +50,7 @@ export class App extends Component {
     const newContact = {
       name,
       number,
-      id: nanoid(), // Генеруємо унікальний ідентифікатор
+      id: nanoid(),
     };
 
     this.setState({
@@ -55,7 +61,7 @@ export class App extends Component {
   };
 
   render() {
-    const { contacts, name, number } = this.state;
+    const { contacts, name, number, filter } = this.state;
 
     return (
       <div>
@@ -77,7 +83,17 @@ export class App extends Component {
           placeholder="Phone number"
         />
         <button onClick={this.handleAddContact}>Add contact</button>
-        <ContactList contacts={contacts} />
+
+        {/* Включаємо компонент Filter і передаємо йому відповідні дані та функцію зміни */}
+        <Filter filter={filter} onFilterChange={this.handleFilterChange} />
+
+        {/* Передаємо відфільтровані контакти у компонент ContactList */}
+        {/* <ContactList contacts={contacts} /> */}
+        <ContactList
+          contacts={contacts.filter(contact =>
+            contact.name.toLowerCase().includes(filter.toLowerCase())
+          )}
+        />
       </div>
     );
   }
