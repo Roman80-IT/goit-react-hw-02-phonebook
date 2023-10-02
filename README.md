@@ -409,3 +409,14 @@ const { onAddContact } = this.props;
 
 Це дозволить **`ContactForm`** коректно викликати ф-цію `handleAddContact` у
 **`App`**.
+
+## Mentor's remarks
+
+Не ок рішення ось так анонімкою передавати значення у проп
+
+```jsx
+contacts={contacts.filter(contact =>
+contact.name.toLowerCase().includes(filter.toLowerCase()) )}
+```
+
+Винесіть його в окремий метод

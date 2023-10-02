@@ -44,6 +44,13 @@ export class App extends Component {
     });
   };
 
+  getFilteredContacts = () => {
+    const { contacts, filter } = this.state;
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
+    );
+  };
+
   handleDeleteContact = id => {
     const { contacts } = this.state;
     const updatedContacts = contacts.filter(contact => contact.id !== id);
@@ -69,9 +76,7 @@ export class App extends Component {
 
         {/* Компонент ContactList для списку контактів */}
         <ContactList
-          contacts={contacts.filter(contact =>
-            contact.name.toLowerCase().includes(filter.toLowerCase())
-          )}
+          contacts={this.getFilteredContacts()}
           onDeleteContact={this.handleDeleteContact} // Передаємо ф-цію для видалення контакту
         />
         <GlobalStyle></GlobalStyle>
