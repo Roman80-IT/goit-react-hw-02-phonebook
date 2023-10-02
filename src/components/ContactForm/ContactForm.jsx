@@ -1,51 +1,48 @@
-import React, { Component } from 'react';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
-export class ContactForm extends Component {
-  state = {
-    name: '',
-    number: '',
+export const ContactForm = ({ addContact, contacts }) => {
+  const validationSchema = Yup.object().shape({
+    name: Yup.string()
+      .matches(
+        /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/,
+        "Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+      )
+      .required('Name is required'),
+    number: Yup.string()
+      .matches(
+        /^\+?\d{1,4}[-.\s]?\(?\d{1,3}\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/,
+        'Phone number must be digits and can contain spaces, dashes, parentheses and can start with +'
+      )
+      .required('Phone number is required'),
+  });
+
+  const handleSubmit = (values, { resetForm }) => {
+    addContact(values.name, values.number);
+    resetForm();
   };
 
-  handleNameChange = event => {
-    this.setState({ name: event.target.value });
-  };
-
-  handleNumberChange = event => {
-    this.setState({ number: event.target.value });
-  };
-
-  handleSubmit = event => {
-    event.preventDefault();
-    const { name, number } = this.state;
-    this.props.onAddContact(name, number);
-    this.setState({ name: '', number: '' }); // Очищуємо поле після додавання контакту
-  };
-
-  render() {
-    const { name, number } = this.state;
-
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          required
-          value={name}
-          onChange={this.handleNameChange}
-          placeholder="Enter name"
-          pattern="^[a-zA-Zа-яА-Я]+(([' \-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$" // Паттерн для імен
-        />
-        <input
-          type="tel"
-          name="number"
-          required
-          value={number}
-          onChange={this.handleNumberChange}
-          placeholder="Enter phone number"
-          pattern="\+?\d{1,4}?[ .\-\\s]?\(?\d{1,3}?\)?[ .\-\\s]?\d{1,4}[ .\-\\s]?\d{1,4}[ .\-\\s]?\d{1,9}" // Паттерн для номерів телефонів
-        />
-        <button type="submit">Add Contact</button>
-      </form>
-    );
-  }
-}
+  return (
+    <Formik
+      initialValues={{ name: '', number: '' }}
+      validationSchema={validationSchema}
+      onSubmit={handleSubmit}
+    >
+      {() => (
+        <Form>
+          <div>
+            <label htmlFor="name">Name</label>
+            <Field type="text" name="name" id="name" />
+            <ErrorMessage name="name" component="div" className="error" />
+          </div>
+          <div>
+            <label htmlFor="number">Number</label>
+            <Field type="tel" name="number" id="number" />
+            <ErrorMessage name="number" component="div" className="error" />
+          </div>
+          <button type="submit">Add contact</button>
+        </Form>
+      )}
+    </Formik>
+  );
+};
