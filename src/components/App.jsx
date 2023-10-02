@@ -1,25 +1,9 @@
 import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
+
 import { Filter } from './Filter/Filter';
-
-export class ContactList extends Component {
-  render() {
-    const { contacts } = this.props;
-
-    return (
-      <div>
-        <h2>Contacts:</h2>
-        <ul>
-          {contacts.map(contact => (
-            <li key={contact.id}>
-              {contact.name}: {contact.number}
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
-  }
-}
+import { ContactForm } from './ContactForm/ContactForm';
+import { ContactList } from './ContactList/ContactList';
 
 export class App extends Component {
   state = {
@@ -31,24 +15,17 @@ export class App extends Component {
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
     filter: '',
-    name: '',
-    number: '',
   };
 
-  handleNameChange = event => {
-    this.setState({ name: event.target.value });
-  };
-
-  handleNumberChange = event => {
-    this.setState({ number: event.target.value });
-  };
-
+  // handleFilterChange = (event) => {
   handleFilterChange = event => {
     this.setState({ filter: event.target.value });
   };
 
-  handleAddContact = () => {
-    const { name, number, contacts } = this.state;
+  // handleAddContact = () => {
+  //   const { name, number, contacts } = this.state;
+  handleAddContact = (name, number) => {
+    const { contacts } = this.state;
     if (name.trim() === '' || number.trim() === '') {
       return; // Не додавати порожні контакти
     }
@@ -61,40 +38,25 @@ export class App extends Component {
 
     this.setState({
       contacts: [...contacts, newContact],
-      name: '', // Очищуємо поле після додавання контакту
-      number: '', //     - // -
     });
   };
 
   render() {
-    const { contacts, name, number, filter } = this.state;
+    const { contacts, filter } = this.state;
 
     return (
       <div>
         <h1>Phonebook</h1>
-        <input
-          type="text"
-          name="name"
-          required
-          value={name}
-          onChange={this.handleNameChange}
-          placeholder="Name of the contact"
-        />
-        <input
-          type="tel"
-          name="number"
-          required
-          value={number}
-          onChange={this.handleNumberChange}
-          placeholder="Phone number"
-        />
-        <button onClick={this.handleAddContact}>Add contact</button>
 
-        {/* Включаємо компонент Filter і передаємо йому відповідні дані та функцію зміни */}
+        {/* Компонент ContactForm для форми додавання контактів */}
+        <ContactForm onAddContact={this.handleAddContact} />
+
+        <h2>Contacts</h2>
+
+        {/* Компонент Filter для фільтрації контактів */}
         <Filter filter={filter} onFilterChange={this.handleFilterChange} />
 
-        {/* Передаємо відфільтровані контакти у компонент ContactList */}
-        {/* <ContactList contacts={contacts} /> */}
+        {/* Компонент ContactList для списку контактів */}
         <ContactList
           contacts={contacts.filter(contact =>
             contact.name.toLowerCase().includes(filter.toLowerCase())
