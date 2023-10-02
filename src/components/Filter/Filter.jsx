@@ -5,7 +5,7 @@ export const Filter = ({ filter, onFilterChange }) => {
       <input
         type="text"
         name="filter"
-        placeholder="Find contacts"
+        placeholder="Find contact"
         value={filter}
         onChange={onFilterChange}
       />

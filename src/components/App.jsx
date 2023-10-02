@@ -26,8 +26,18 @@ export class App extends Component {
   //   const { name, number, contacts } = this.state;
   handleAddContact = (name, number) => {
     const { contacts } = this.state;
+
+    // Перевіряємо, чи ім'я вже існує в списку контактів
+    const isNameExist = contacts.some(contact => contact.name === name);
+
+    if (isNameExist) {
+      alert(`${name} is already in contacts.`);
+      return;
+    }
+
     if (name.trim() === '' || number.trim() === '') {
-      return; // Не додавати порожні контакти
+      alert('Name and phone number are required fields.');
+      return;
     }
 
     const newContact = {
