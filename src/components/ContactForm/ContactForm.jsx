@@ -33,6 +33,7 @@ export class ContactForm extends Component {
           value={name}
           onChange={this.handleNameChange}
           placeholder="Enter name"
+          pattern="^[a-zA-Zа-яА-Я]+(([' \-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$" // Паттерн для імен
         />
         <input
           type="tel"
@@ -41,6 +42,7 @@ export class ContactForm extends Component {
           value={number}
           onChange={this.handleNumberChange}
           placeholder="Enter phone number"
+          pattern="\+?\d{1,4}?[ .\-\\s]?\(?\d{1,3}?\)?[ .\-\\s]?\d{1,4}[ .\-\\s]?\d{1,4}[ .\-\\s]?\d{1,9}" // Паттерн для номерів телефонів
         />
         <button type="submit">Add Contact</button>
       </form>
