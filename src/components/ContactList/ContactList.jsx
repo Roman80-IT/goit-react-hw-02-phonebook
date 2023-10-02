@@ -1,25 +1,29 @@
+import { MdOutlineRemoveCircleOutline } from 'react-icons/md';
+
+import { Btn, List, ListItem } from './ContactList.styled';
+
 export const ContactItem = ({ contact, onDeleteContact }) => {
   return (
-    <li>
+    <ListItem>
+      <Btn onClick={() => onDeleteContact(contact.id)}>
+        <MdOutlineRemoveCircleOutline size="24" />
+      </Btn>
       {contact.name}: {contact.number}
-      <button onClick={() => onDeleteContact(contact.id)}>Delete</button>
-    </li>
+    </ListItem>
   );
 };
 
 export const ContactList = ({ contacts, onDeleteContact }) => {
   return (
-    <div>
-      <ul>
-        {contacts.map(contact => (
-          <ContactItem
-            key={contact.id}
-            contact={contact}
-            onDeleteContact={onDeleteContact}
-          />
-        ))}
-      </ul>
-    </div>
+    <List>
+      {contacts.map(contact => (
+        <ContactItem
+          key={contact.id}
+          contact={contact}
+          onDeleteContact={onDeleteContact}
+        />
+      ))}
+    </List>
   );
 };
 

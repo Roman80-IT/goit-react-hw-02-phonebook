@@ -1,7 +1,16 @@
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-export const ContactForm = ({ addContact, contacts }) => {
+import {
+  Btn,
+  ErrorText,
+  FormWrapper,
+  Input,
+  InputName,
+  ListItem,
+} from './ContactForm.styled';
+
+export const ContactForm = ({ onAddContact, contacts }) => {
   const validationSchema = Yup.object().shape({
     name: Yup.string()
       .matches(
@@ -17,31 +26,32 @@ export const ContactForm = ({ addContact, contacts }) => {
       .required('Phone number is required'),
   });
 
-  const handleSubmit = (values, { resetForm }) => {
-    addContact(values.name, values.number);
-    resetForm();
-  };
-
   return (
     <Formik
       initialValues={{ name: '', number: '' }}
       validationSchema={validationSchema}
-      onSubmit={handleSubmit}
+      onSubmit={(values, { resetForm }) => {
+        onAddContact(values.name, values.number);
+        resetForm();
+      }}
     >
       {() => (
-        <Form>
-          <div>
-            <label htmlFor="name">Name</label>
-            <Field type="text" name="name" id="name" />
-            <ErrorMessage name="name" component="div" className="error" />
-          </div>
-          <div>
-            <label htmlFor="number">Number</label>
-            <Field type="tel" name="number" id="number" />
-            <ErrorMessage name="number" component="div" className="error" />
-          </div>
-          <button type="submit">Add contact</button>
-        </Form>
+        <FormWrapper>
+          <ul>
+            <ListItem>
+              <InputName htmlFor="name">Name</InputName>
+              <Input type="text" name="name" id="name" />
+              <ErrorText name="name" component="div" className="error" />
+            </ListItem>
+            <ListItem>
+              <InputName htmlFor="number">Number</InputName>
+              <Input type="tel" name="number" id="number" />
+              <ErrorText name="number" component="div" className="error" />
+            </ListItem>
+          </ul>
+
+          <Btn type="submit">Add contact</Btn>
+        </FormWrapper>
       )}
     </Formik>
   );
