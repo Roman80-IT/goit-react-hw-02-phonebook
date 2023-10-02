@@ -51,6 +51,12 @@ export class App extends Component {
     });
   };
 
+  handleDeleteContact = id => {
+    const { contacts } = this.state;
+    const updatedContacts = contacts.filter(contact => contact.id !== id);
+    this.setState({ contacts: updatedContacts });
+  };
+
   render() {
     const { contacts, filter } = this.state;
 
@@ -59,11 +65,13 @@ export class App extends Component {
         <h1>Phonebook</h1>
 
         {/* Компонент ContactForm для форми додавання контактів */}
-        <ContactForm onAddContact={this.handleAddContact} />
+        <ContactForm
+          onAddContact={this.handleAddContact}
+          contacts={contacts} // Передаємо список контактів у ContactForm (крок 5)
+        />
 
         <h2>Contacts</h2>
 
-        {/* Компонент Filter для фільтрації контактів */}
         <Filter filter={filter} onFilterChange={this.handleFilterChange} />
 
         {/* Компонент ContactList для списку контактів */}
@@ -71,6 +79,7 @@ export class App extends Component {
           contacts={contacts.filter(contact =>
             contact.name.toLowerCase().includes(filter.toLowerCase())
           )}
+          onDeleteContact={this.handleDeleteContact} // Передаємо ф-цію для видалення контакту
         />
       </div>
     );

@@ -1,17 +1,22 @@
-export const ContactItem = ({ contact }) => {
+export const ContactItem = ({ contact, onDeleteContact }) => {
   return (
     <li>
       {contact.name}: {contact.number}
+      <button onClick={() => onDeleteContact(contact.id)}>Delete</button>
     </li>
   );
 };
 
-export const ContactList = ({ contacts }) => {
+export const ContactList = ({ contacts, onDeleteContact }) => {
   return (
     <div>
       <ul>
         {contacts.map(contact => (
-          <ContactItem key={contact.id} contact={contact} />
+          <ContactItem
+            key={contact.id}
+            contact={contact}
+            onDeleteContact={onDeleteContact}
+          />
         ))}
       </ul>
     </div>
