@@ -317,3 +317,95 @@ npm install yup formik
 Замість цього - визначаються початкові значення полів у компоненті **Formik**
 через властивість `initialValues` (визначає початкові значення для полів `name`
 та `number`)
+
+## ContactList
+
+Початкова розмітка:
+
+```jsx
+  render() {
+    const { contacts } = this.props;
+
+    return (
+      <div>
+        <ul>
+          {contacts.map(contact => (
+            <li key={contact.id}>
+              {contact.name}: {contact.number}
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
+```
+
+## Стилізація
+
+- імпорт іконки `MdOutlineRemoveCircleOutline` з пакету `react-icons/md`
+
+```jsx
+npm install react-icons
+
+import { MdOutlineRemoveCircleOutline } from 'react-icons/md';
+```
+
+Встановлення `styled components`:
+
+```
+npm install styled-components
+```
+
+- фікс помилки установки пакета:
+
+```
+npm install --save-dev @babel/plugin-proposal-private-property-in-object
+```
+
+## Fix error
+
+Для правильної роботи компонентів **`App`** і **`ContactForm`**, необхідно
+враховувати:
+
+Компонент **`App`** має визначити ф-цію для додавання контакту (напр.
+`handleAddContact`) і передати її як пропс компоненту **`ContactForm`**.
+
+Компонент **`ContactForm`** має приймати цю ф-цію як один з своїх пропсів і
+використовувати її для додавання нових контактів.
+
+Важливо, щоб назви пропсів у компонентах співпадали з тими, які визначили в
+**`App`**. Наприклад, якщо у **`App`** ви визначили функцію для додавання
+контакту як `handleAddContact`, то в компоненті **`ContactForm`** ви можете
+передати цю функцію через пропс з аналогічною назвою, наприклад, `onAddContact`:
+
+```jsx
+// В компоненті App
+
+<ContactForm onAddContact={this.handleAddContact} />
+```
+
+```jsx
+// В компоненті ContactForm
+
+const { onAddContact } = this.props;
+```
+
+Це дозволить викликати функцію `onAddContact` у компоненті **`ContactForm`**,
+щоб додати нові контакти. **Пам'ятай**, що назви пропсів мають співпадати - вони
+можуть мати різні імена у компонентах, але вони повинні бути правильно вказані
+при передачі.
+
+У компоненті **`App`**:
+
+```jsx
+<ContactForm onAddContact={this.handleAddContact} />
+```
+
+У компоненті **`ContactForm`**:
+
+```jsx
+const { onAddContact } = this.props;
+```
+
+Це дозволить **`ContactForm`** коректно викликати ф-цію `handleAddContact` у
+**`App`**.

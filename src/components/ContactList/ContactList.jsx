@@ -26,19 +26,3 @@ export const ContactList = ({ contacts, onDeleteContact }) => {
     </List>
   );
 };
-
-//   render() {
-//     const { contacts } = this.props;
-
-//     return (
-//       <div>
-//         <ul>
-//           {contacts.map(contact => (
-//             <li key={contact.id}>
-//               {contact.name}: {contact.number}
-//             </li>
-//           ))}
-//         </ul>
-//       </div>
-//     );
-//   }
